@@ -1,0 +1,54 @@
+# FACTORIAL
+procedure is_greater_one(n: int; ref r: bool ) {
+r := (not (n <= 1))
+}
+
+program factorial(value: int, result: int ) {
+result := 1
+var greater_one: bool
+call is_greater_one(value; greater_one)
+while greater_one do {
+result := (result * value)
+value := (value - 1)
+call is_greater_one(value; greater_one)
+}
+}
+
+TYPE CHECK: VALID Program
+
+INPUT   OUTPUT
+5       1
+0       120
+
+############################################################################################################
+# FAILING FACTORIAL, where we try to access the variable "r" inside the program
+# but it is not accessible since it is not in the variable typings of the program execution 
+procedure is_greater_one( n: int; ref r: bool ) {
+r := (not (n <= 1))
+}
+
+program factorial( value: int ) {
+var result: int
+r := 1
+var greater_one: bool
+call is_greater_one(value; greater_one)
+while greater_one do {
+result := (result * value)
+value := (value - 1)
+call is_greater_one(value; greater_one)
+}
+}
+
+TYPE CHECK: ERROR
+
+############################################################################################################
+# EXPRESSION
+(((1 <= 5) ? 5 : 15) + 5)
+
+TYPE CHECK: VALID Expression
+
+############################################################################################################
+# FAILING EXPRESSION, where the first expression is not of sort bool
+(((1 + 5) ? 5 : 15) + 5)
+
+TYPE CHECK: ERROR
